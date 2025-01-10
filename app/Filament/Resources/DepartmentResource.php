@@ -3,9 +3,9 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\DepartmentResource\Pages;
-use App\Filament\Resources\DepartmentResource\RelationManagers;
+use App\Filament\Resources\DepartmentResource\RelationManagers\CategoryRelationManager;
 use App\Models\Department;
-use Filament\Forms;
+
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -30,13 +30,11 @@ class DepartmentResource extends Resource
         return $form
             ->schema([
                 TextInput::make('name')
-                         ->live(onBlur:true)
-                          ->required()
-                          ->afterStateUpdated(function
-                          (string $operation, $state, callable $set)
-                           {
-                          $set('slug', str::slug($state));
-                      }),
+                    ->live(onBlur: true)
+                    ->required()
+                    ->afterStateUpdated(function (string $operation, $state, callable $set) {
+                        $set('slug', str::slug($state));
+                    }),
                 TextInput::make('slug'),
                 Checkbox::make('active')
 
@@ -49,11 +47,11 @@ class DepartmentResource extends Resource
         return $table
             ->columns([
                 TextColumn::make('name')
-                ->searchable()
-                ->sortable(),
+                    ->searchable()
+                    ->sortable(),
 
             ])
-            ->defaultSort('created_at','dsc')
+            ->defaultSort('created_at', 'dsc')
             ->filters([
                 //
             ])
@@ -71,7 +69,7 @@ class DepartmentResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+         CategoryRelationManager::class
         ];
     }
 
@@ -83,5 +81,4 @@ class DepartmentResource extends Resource
             'edit' => Pages\EditDepartment::route('/{record}/edit'),
         ];
     }
-    
 }

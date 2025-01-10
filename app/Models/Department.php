@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Department extends Model
 {
-    public function categories():HasMany
+    public function category():HasMany
     {
         return $this->hasMany(Category::class);
     }
